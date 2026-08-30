@@ -1,0 +1,110 @@
+---
+import { siteConfig } from '../data/siteConfig';
+import SocialIcons from './SocialIcons.astro';
+---
+
+<div id="mobile-menu" class="fixed inset-0 z-40 bg-cream opacity-0 pointer-events-none invisible flex flex-col items-center justify-center h-full">
+  <nav class="flex flex-col items-center gap-6 w-full" aria-label="Mobile navigation">
+    {siteConfig.nav.map((item) => (
+      <div class="overflow-hidden">
+        <a 
+          href={item.href} 
+          class="mobile-nav-link block font-serif text-3xl sm:text-4xl text-charcoal hover:text-olive transition-colors"
+        >
+          {item.label}
+        </a>
+      </div>
+    ))}
+  </nav>
+
+  <div class="mobile-social mt-12 overflow-hidden opacity-0">
+    <SocialIcons />
+  </div>
+
+  <div class="mobile-contact mt-8 text-center opacity-0 flex flex-col gap-2">
+    <a href={`tel:${siteConfig.phoneRaw}`} class="font-sans text-charcoal hover:text-olive transition-colors">
+      {siteConfig.phone}
+    </a>
+    <a href={`mailto:${siteConfig.email}`} class="font-sans text-charcoal hover:text-olive transition-colors">
+      {siteConfig.email}
+    </a>
+  </div>
+</div>
+
+<script>
+  import gsap from 'gsap';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelectorAll('.mobile-nav-link');
+    const lines = document.querySelectorAll('.hamburger-line');
+    
+    if (!menuToggle || !mobileMenu) return;
+
+    let isMenuOpen = false;
+    
+    const ctx = gsap.context(() => {
+      // Create GSAP Timeline for menu animation
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.inOut' } });
+      
+      // Menu container reveal
+      tl.to(mobileMenu, {
+        autoAlpha: 1,
+        duration: 0.4
+      });
+      
+      // Links stagger in from bottom
+      tl.fromTo(navLinks, 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 },
+        "-=0.2"
+      );
+      
+      // Social and contact fade in
+      tl.fromTo(['.mobile-social', '.mobile-contact'],
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, stagger: 0.1 },
+        "-=0.3"
+      );
+
+      const toggleMenu = () => {
+        isMenuOpen = !isMenuOpen;
+        
+        menuToggle.setAttribute('aria-expanded', isMenuOpen.toString());
+        document.body.classList.toggle('overflow-hidden', isMenuOpen);
+        
+        if (isMenuOpen) {
+          tl.play();
+          gsap.to(lines[0], { y: 8, rotation: 45, duration: 0.3, ease: "power2.inOut" });
+          gsap.to(lines[1], { opacity: 0, duration: 0.3, ease: "power2.inOut" });
+          gsap.to(lines[2], { y: -8, rotation: -45, duration: 0.3, ease: "power2.inOut" });
+        } else {
+          tl.reverse();
+          gsap.to(lines[0], { y: 0, rotation: 0, duration: 0.3, ease: "power2.inOut" });
+          gsap.to(lines[1], { opacity: 1, duration: 0.3, ease: "power2.inOut" });
+          gsap.to(lines[2], { y: 0, rotation: 0, duration: 0.3, ease: "power2.inOut" });
+        }
+      };
+
+      menuToggle.addEventListener('click', toggleMenu);
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (isMenuOpen) toggleMenu();
+        });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isMenuOpen) {
+          toggleMenu();
+        }
+      });
+    }, mobileMenu.parentElement || document.body);
+
+    // Cleanup on Astro page transition
+    document.addEventListener('astro:before-swap', () => {
+      ctx.revert();
+    }, { once: true });
+  });
+</script>

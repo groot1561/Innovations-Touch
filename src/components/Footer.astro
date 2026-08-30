@@ -1,0 +1,55 @@
+---
+import { siteConfig } from '../data/siteConfig';
+import SocialIcons from './SocialIcons.astro';
+---
+
+<footer class='bg-charcoal border-t border-charcoal-light'>
+  <div class='section-padding max-w-7xl mx-auto px-6 py-12 lg:py-16'>
+    <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12'>
+      
+      <!-- Brand -->
+      <div class='lg:col-span-1'>
+        <span class='font-serif text-xl text-ivory block mb-1'>Innovations Touch</span>
+        <span class='text-warm-gray-light text-xs uppercase tracking-wider'>Remodeling & Design</span>
+      </div>
+      
+      <!-- Navigation -->
+      <div>
+        <h4 class='text-xs uppercase tracking-wider text-warm-gray-light font-medium mb-4'>Navigation</h4>
+        <nav class='flex flex-col gap-2' aria-label='Footer navigation'>
+          {siteConfig.nav.map((item: any) => (
+            <a href={item.href} class='text-ivory/70 text-sm hover:text-ivory transition-colors'>{item.label}</a>
+          ))}
+        </nav>
+      </div>
+      
+      <!-- Contact -->
+      <div>
+        <h4 class='text-xs uppercase tracking-wider text-warm-gray-light font-medium mb-4'>Contact</h4>
+        <div class='space-y-2 text-sm text-ivory/70'>
+          <p>{siteConfig.address.street}</p>
+          <p>{siteConfig.address.city}, {siteConfig.address.stateAbbr} {siteConfig.address.zip}</p>
+          <a href={`tel:${siteConfig.phoneRaw}`} class='block hover:text-ivory transition-colors'>{siteConfig.phone}</a>
+          <a href={`mailto:${siteConfig.email}`} class='block hover:text-ivory transition-colors'>{siteConfig.email}</a>
+        </div>
+      </div>
+      
+      <!-- Social -->
+      <div>
+        <h4 class='text-xs uppercase tracking-wider text-warm-gray-light font-medium mb-4'>Follow Us</h4>
+        <SocialIcons size='sm' className='text-ivory/50' />
+      </div>
+    </div>
+    
+    <!-- Bottom bar -->
+    <div class='border-t border-charcoal-light mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4'>
+      <p class='text-warm-gray-light text-xs'>
+        © {new Date().getFullYear()} Innovations Touch. All rights reserved.
+      </p>
+      <div class='flex gap-6'>
+        <a href='#' class='text-warm-gray-light text-xs hover:text-ivory transition-colors'>Privacy Policy</a>
+        <a href='#' class='text-warm-gray-light text-xs hover:text-ivory transition-colors'>Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>

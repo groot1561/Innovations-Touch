@@ -1,0 +1,206 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource/instrument-serif";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "tailwindcss";
+
+/* ============================================
+   Theme — Sage / Olive / Cream Color System
+   ============================================ */
+@theme {
+  /* Fonts */
+  --font-sans: "Inter Variable", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+
+  /* Brand Colors */
+  --color-cream: #f3f1e8;
+  --color-cream-light: #f8f7f2;
+  --color-ivory: #faf9f4;
+  --color-sage: #7a8563;
+  --color-olive: #626b4a;
+  --color-olive-deep: #414832;
+  --color-charcoal: #292923;
+  --color-charcoal-light: #3d3d34;
+  --color-warm-gray: #68675e;
+  --color-warm-gray-light: #9a9890;
+  --color-border: #ddd9cb;
+  --color-border-light: #e8e5da;
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-charcoal);
+    background-color: var(--color-cream);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: var(--color-olive);
+    color: var(--color-ivory);
+  }
+
+  /* Serif headings */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  /* Focus visible */
+  :focus-visible {
+    outline: 2px solid var(--color-olive);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Smooth images */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Remove default button styles */
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+@utility label-text {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-olive);
+}
+
+@utility section-padding {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+/* ============================================
+   Form Styles
+   ============================================ */
+@layer base {
+  input,
+  textarea,
+  select {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--color-charcoal);
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    padding: 0.875rem 1rem;
+    width: 100%;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--color-olive);
+    box-shadow: 0 0 0 3px rgba(98, 107, 74, 0.1);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-warm-gray-light);
+  }
+
+  label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-warm-gray);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================
+   Body scroll lock (for mobile menu)
+   ============================================ */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* ============================================
+   Header States
+   ============================================ */
+#site-header.header-scrolled {
+  background-color: rgba(243, 241, 232, 0.97);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--color-border-light);
+  backdrop-filter: blur(12px);
+}
+
+/* Active nav indicator */
+.nav-active {
+  color: var(--color-olive) !important;
+}
+
+.nav-active::after {
+  transform: scaleX(1) !important;
+}

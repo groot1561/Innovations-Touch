@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import { siteConfig } from '../data/siteConfig';
+
+export interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { 
+	title = 'Innovations Touch | Remodeling & Design', 
+	description = siteConfig.description 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={Astro.url} />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL('/og-image.jpg', Astro.url)} />
+	</head>
+	<body class="antialiased bg-cream text-charcoal font-sans">
+		<slot />
+		<script>
+			import '../scripts/animations';
+		</script>
+	</body>
+</html>

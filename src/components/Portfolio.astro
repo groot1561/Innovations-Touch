@@ -1,0 +1,198 @@
+---
+import { projects } from '../data/portfolio';
+
+const projectsJson = JSON.stringify(projects);
+---
+
+<section id='portfolio' class='portfolio-section relative min-h-screen bg-charcoal overflow-hidden flex flex-col justify-center'>
+  <div class='section-padding py-16 lg:py-24 max-w-7xl mx-auto w-full'>
+    <!-- Section header -->
+    <div class='portfolio-header mb-10 lg:mb-14'>
+      <span class='label-text block mb-3 text-sage uppercase tracking-[0.2em] text-xs font-sans font-semibold'>Our Work</span>
+      <h2 class='font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-ivory max-w-2xl leading-[1.1]'>
+        Crafted With Intention.
+      </h2>
+      <p class='text-warm-gray-light text-base md:text-lg mt-3 max-w-xl font-sans'>
+        A selection of spaces transformed through thoughtful design and careful craftsmanship.
+      </p>
+    </div>
+    
+    <!-- Portfolio viewer -->
+    <div class='portfolio-viewer relative'>
+      <div class='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center'>
+        
+        <!-- Image side: ~80-85vh vertical height -->
+        <div class='lg:col-span-7 portfolio-image-container relative h-[65vh] sm:h-[75vh] lg:h-[80vh] xl:h-[85vh] w-full overflow-hidden rounded-2xl border border-ivory/10 shadow-2xl bg-charcoal-light/20'>
+          {projects.map((project, index) => (
+            <div 
+              class={`portfolio-image-slide absolute inset-0 w-full h-full ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+              data-index={index}
+            >
+              <img 
+                src={project.image} 
+                alt={project.imageAlt}
+                class='w-full h-full object-cover'
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+              <div class='absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent'></div>
+            </div>
+          ))}
+        </div>
+        
+        <!-- Info side -->
+        <div class='lg:col-span-5 portfolio-info lg:pl-4'>
+          <!-- Project counter -->
+          <div class='portfolio-counter flex items-center gap-3 mb-6 lg:mb-8'>
+            <span class='portfolio-counter-current font-serif text-4xl lg:text-6xl font-light text-ivory tracking-tight'>01</span>
+            <span class='font-sans text-warm-gray-light text-lg font-light'>/</span>
+            <span class='font-sans text-warm-gray-light text-lg font-light'>{String(projects.length).padStart(2, '0')}</span>
+          </div>
+          
+          <!-- Project details (animated on change) -->
+          <div class='portfolio-details space-y-4'>
+            <span class='portfolio-project-category inline-block font-sans text-xs uppercase tracking-[0.2em] text-sage font-medium px-3 py-1 rounded-full bg-sage/10 border border-sage/20'>
+              {projects[0].category}
+            </span>
+
+            <h3 class='portfolio-project-name font-serif text-3xl sm:text-4xl lg:text-5xl text-ivory tracking-wide leading-tight'>
+              {projects[0].name}
+            </h3>
+
+            <p class='portfolio-project-location font-sans text-xs uppercase tracking-widest text-warm-gray-light flex items-center gap-2'>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sage"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              {projects[0].location}
+            </p>
+
+            <p class='portfolio-project-desc text-warm-gray-light/90 text-sm sm:text-base leading-relaxed font-sans max-w-md pt-2'>
+              {projects[0].description}
+            </p>
+          </div>
+          
+          <!-- Navigation controls -->
+          <div class='portfolio-controls flex items-center gap-4 mt-8 lg:mt-12'>
+            <button 
+              class='portfolio-prev w-12 h-12 rounded-full border border-ivory/20 flex items-center justify-center text-ivory/70 hover:text-ivory hover:border-sage hover:bg-sage/10 transition-all cursor-pointer'
+              aria-label='Previous project'
+            >
+              <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'>
+                <path d='M19 12H5M12 19l-7-7 7-7'/>
+              </svg>
+            </button>
+            <button 
+              class='portfolio-next w-12 h-12 rounded-full border border-ivory/20 flex items-center justify-center text-ivory/70 hover:text-ivory hover:border-sage hover:bg-sage/10 transition-all cursor-pointer'
+              aria-label='Next project'
+            >
+              <svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'>
+                <path d='M5 12h14M12 5l7 7-7 7'/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="portfolio-data" data-projects={projectsJson} style="display:none;"></div>
+
+<script>
+  import gsap from 'gsap';
+
+  interface Project {
+    number: string;
+    name: string;
+    category: string;
+    location: string;
+    description: string;
+    image: string;
+    imageAlt: string;
+  }
+
+  const initPortfolio = () => {
+    const dataEl = document.getElementById('portfolio-data');
+    if (!dataEl) return;
+    
+    const projectsRaw = dataEl.getAttribute('data-projects');
+    if (!projectsRaw) return;
+    
+    const projects: Project[] = JSON.parse(projectsRaw);
+    const totalProjects = projects.length;
+    let currentIndex = 0;
+    let isAnimating = false;
+
+    const imageSlides = document.querySelectorAll('.portfolio-image-slide');
+    const nameEl = document.querySelector('.portfolio-project-name');
+    const categoryEl = document.querySelector('.portfolio-project-category');
+    const locationEl = document.querySelector('.portfolio-project-location');
+    const descEl = document.querySelector('.portfolio-project-desc');
+    const counterEl = document.querySelector('.portfolio-counter-current');
+    const prevBtn = document.querySelector('.portfolio-prev');
+    const nextBtn = document.querySelector('.portfolio-next');
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function goToProject(newIndex: number) {
+      if (isAnimating || newIndex === currentIndex) return;
+      isAnimating = true;
+      
+      const project = projects[newIndex];
+      const currentSlide = imageSlides[currentIndex];
+      const nextSlide = imageSlides[newIndex];
+
+      if (prefersReducedMotion) {
+        gsap.set(currentSlide, { opacity: 0 });
+        gsap.set(nextSlide, { opacity: 1, scale: 1 });
+        if (nameEl) nameEl.textContent = project.name;
+        if (categoryEl) categoryEl.textContent = project.category;
+        if (locationEl) {
+          locationEl.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sage"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> ${project.location}`;
+        }
+        if (descEl) descEl.textContent = project.description;
+        if (counterEl) counterEl.textContent = project.number;
+        currentIndex = newIndex;
+        isAnimating = false;
+        return;
+      }
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          currentIndex = newIndex;
+          isAnimating = false;
+        }
+      });
+      
+      // Image transition
+      tl.to(currentSlide, { opacity: 0, scale: 1.05, duration: 0.6, ease: 'power2.inOut' })
+        .fromTo(nextSlide, 
+          { opacity: 0, scale: 0.95 }, 
+          { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.inOut' }, 
+          '-=0.3'
+        );
+      
+      // Text transition
+      tl.to('.portfolio-details', { opacity: 0, y: 10, duration: 0.3, ease: 'power2.in' }, 0)
+        .call(() => {
+          if (nameEl) nameEl.textContent = project.name;
+          if (categoryEl) categoryEl.textContent = project.category;
+          if (locationEl) {
+            locationEl.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sage"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> ${project.location}`;
+          }
+          if (descEl) descEl.textContent = project.description;
+          if (counterEl) counterEl.textContent = project.number;
+        })
+        .to('.portfolio-details', { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      const newIndex = currentIndex === 0 ? totalProjects - 1 : currentIndex - 1;
+      goToProject(newIndex);
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      const newIndex = currentIndex === totalProjects - 1 ? 0 : currentIndex + 1;
+      goToProject(newIndex);
+    });
+  };
+
+  initPortfolio();
+</script>

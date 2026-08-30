@@ -1,0 +1,185 @@
+---
+---
+<div id="contact-form-container" class="w-full">
+  <form id="contact-form" action="" method="POST" class="grid grid-cols-1 sm:grid-cols-2 gap-6" novalidate>
+    <!-- Name -->
+    <div class="flex flex-col gap-2">
+      <label for="name" class="font-sans text-xs uppercase tracking-[0.15em] font-bold text-charcoal">Name</label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        placeholder="Your Full Name" 
+        class="border border-border/80 bg-cream/30 rounded-xl px-5 py-4 text-base text-charcoal focus:outline-none focus:border-olive focus:bg-white focus:ring-4 focus:ring-olive/10 transition-all font-sans" 
+        required 
+        minlength="2" 
+      />
+      <span class="field-error text-[#8B4513] text-xs hidden">Please enter your name (min 2 characters).</span>
+    </div>
+
+    <!-- Email -->
+    <div class="flex flex-col gap-2">
+      <label for="email" class="font-sans text-xs uppercase tracking-[0.15em] font-bold text-charcoal">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        placeholder="name@example.com" 
+        class="border border-border/80 bg-cream/30 rounded-xl px-5 py-4 text-base text-charcoal focus:outline-none focus:border-olive focus:bg-white focus:ring-4 focus:ring-olive/10 transition-all font-sans" 
+        required 
+      />
+      <span class="field-error text-[#8B4513] text-xs hidden">Please enter a valid email address.</span>
+    </div>
+
+    <!-- Phone -->
+    <div class="flex flex-col gap-2">
+      <label for="phone" class="font-sans text-xs uppercase tracking-[0.15em] font-bold text-charcoal">Phone</label>
+      <input 
+        type="tel" 
+        id="phone" 
+        name="phone" 
+        placeholder="(000) 000-0000" 
+        class="border border-border/80 bg-cream/30 rounded-xl px-5 py-4 text-base text-charcoal focus:outline-none focus:border-olive focus:bg-white focus:ring-4 focus:ring-olive/10 transition-all font-sans" 
+      />
+      <span class="field-error text-[#8B4513] text-xs hidden">Please enter a valid phone number.</span>
+    </div>
+
+    <!-- Project Type -->
+    <div class="flex flex-col gap-2">
+      <label for="project-type" class="font-sans text-xs uppercase tracking-[0.15em] font-bold text-charcoal">Project Type</label>
+      <select 
+        id="project-type" 
+        name="projectType" 
+        class="border border-border/80 bg-cream/30 rounded-xl px-5 py-4 text-base text-charcoal focus:outline-none focus:border-olive focus:bg-white focus:ring-4 focus:ring-olive/10 transition-all font-sans cursor-pointer" 
+        required
+      >
+        <option value="" disabled selected>Select project type</option>
+        <option value="kitchen">Kitchen Renovation</option>
+        <option value="bathroom">Bathroom Remodeling</option>
+        <option value="design-build">Design Build Home</option>
+        <option value="hall">Hall Renovation</option>
+        <option value="other">Other Project</option>
+      </select>
+      <span class="field-error text-[#8B4513] text-xs hidden">Please select a project type.</span>
+    </div>
+
+    <!-- Message -->
+    <div class="flex flex-col gap-2 sm:col-span-2">
+      <label for="message" class="font-sans text-xs uppercase tracking-[0.15em] font-bold text-charcoal">Message</label>
+      <textarea 
+        id="message" 
+        name="message" 
+        placeholder="Tell us about your space, ideas, and vision..." 
+        rows="4" 
+        class="border border-border/80 bg-cream/30 rounded-xl px-5 py-4 text-base text-charcoal focus:outline-none focus:border-olive focus:bg-white focus:ring-4 focus:ring-olive/10 transition-all font-sans resize-y" 
+        required 
+        minlength="10"
+      ></textarea>
+      <span class="field-error text-[#8B4513] text-xs hidden">Please enter a message (min 10 characters).</span>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="sm:col-span-2 mt-2">
+      <button 
+        type="submit" 
+        class="bg-olive text-ivory px-10 py-5 text-sm sm:text-base uppercase tracking-[0.2em] font-bold font-sans rounded-xl hover:bg-olive-deep hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 w-full cursor-pointer"
+      >
+        Send Message
+      </button>
+    </div>
+  </form>
+
+  <!-- Success State Panel -->
+  <div id="form-success" class="form-success hidden flex-col items-center justify-center py-16 px-8 text-center bg-white rounded-3xl border border-border shadow-2xl">
+    <div class="w-20 h-20 rounded-full bg-olive/10 text-olive flex items-center justify-center mb-6">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+    <h3 class="font-serif text-3xl sm:text-4xl text-charcoal mb-3">Thank You!</h3>
+    <p class="text-warm-gray text-base sm:text-lg max-w-md mx-auto mb-8 font-sans leading-relaxed">
+      We've received your inquiry and our design team will reach out within 24 business hours.
+    </p>
+    <button id="reset-form" class="bg-cream hover:bg-cream-light text-charcoal border border-border px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-bold transition-all">
+      Send Another Message
+    </button>
+  </div>
+</div>
+
+<style>
+  input.error, select.error, textarea.error {
+    border-color: #8B4513;
+    background-color: rgba(139, 69, 19, 0.04);
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const successPanel = document.getElementById('form-success');
+  const resetBtn = document.getElementById('reset-form');
+
+  if (form && successPanel && resetBtn) {
+    const validateField = (input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
+      let isValid = true;
+      const errorMsg = input.nextElementSibling as HTMLElement;
+      
+      if (input.required && !input.value.trim()) {
+        isValid = false;
+      } else if (input.type === 'email' && input.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        isValid = emailRegex.test(input.value);
+      } else if (input.id === 'phone' && input.value) {
+        const phoneRegex = /^\+?[\d\s\-\(\)]+$/;
+        isValid = phoneRegex.test(input.value);
+      } else if (input.minLength > 0 && input.value.length < input.minLength) {
+        isValid = false;
+      }
+
+      if (!isValid) {
+        input.classList.add('error');
+        if (errorMsg) errorMsg.classList.remove('hidden');
+      } else {
+        input.classList.remove('error');
+        if (errorMsg) errorMsg.classList.add('hidden');
+      }
+
+      return isValid;
+    };
+
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('input', () => validateField(input as any));
+      input.addEventListener('blur', () => validateField(input as any));
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      let isFormValid = true;
+      inputs.forEach(input => {
+        if (!validateField(input as any)) {
+          isFormValid = false;
+        }
+      });
+
+      if (isFormValid) {
+        form.classList.add('hidden');
+        successPanel.classList.remove('hidden');
+        successPanel.classList.add('flex');
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      inputs.forEach(input => {
+        input.classList.remove('error');
+        const errorMsg = input.nextElementSibling as HTMLElement;
+        if (errorMsg) errorMsg.classList.add('hidden');
+      });
+      
+      successPanel.classList.add('hidden');
+      successPanel.classList.remove('flex');
+      form.classList.remove('hidden');
+    });
+  }
+</script>

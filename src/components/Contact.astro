@@ -1,0 +1,88 @@
+---
+import { siteConfig } from '../data/siteConfig';
+import ContactForm from './ContactForm.astro';
+---
+
+<section id='contact' class='contact-section relative min-h-screen lg:h-screen flex items-center justify-center bg-ivory py-16 lg:py-0 overflow-hidden'>
+  <div class='section-padding max-w-7xl mx-auto w-full'>
+    <div class='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center'>
+      
+      <!-- Left Column: High-Impact Typography & Metadata (7 cols) -->
+      <div class='lg:col-span-6 contact-info space-y-8 lg:space-y-10'>
+        <!-- Header -->
+        <div class='contact-header space-y-4'>
+          <span class='label-text block text-xs sm:text-sm font-sans uppercase tracking-[0.25em] text-olive font-bold'>
+            Let's Talk
+          </span>
+          <h2 class='font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-charcoal leading-[1.02] tracking-tight'>
+            From Vision<br/>To Reality.
+          </h2>
+          <p class='text-warm-gray text-lg sm:text-xl lg:text-2xl mt-4 font-sans font-light leading-relaxed max-w-xl'>
+            Tell us about your space, your ideas, and what you'd like to create.
+          </p>
+        </div>
+
+        <!-- Contact Channels Grid -->
+        <div class='grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4 border-t border-border/70'>
+          <!-- Location -->
+          <div class='space-y-2'>
+            <h4 class='font-sans text-xs uppercase tracking-[0.2em] text-olive font-bold'>Location</h4>
+            <p class='text-charcoal-light text-base sm:text-lg font-medium leading-relaxed font-sans'>
+              {siteConfig.address.street}<br/>
+              {siteConfig.address.city}, {siteConfig.address.stateAbbr} {siteConfig.address.zip}
+            </p>
+          </div>
+
+          <!-- Phone & Email -->
+          <div class='space-y-4'>
+            <div>
+              <h4 class='font-sans text-xs uppercase tracking-[0.2em] text-olive font-bold mb-1'>Phone</h4>
+              <a href={`tel:${siteConfig.phoneRaw}`} class='text-charcoal-light text-base sm:text-lg font-medium hover:text-olive transition-colors font-sans block'>
+                {siteConfig.phone}
+              </a>
+            </div>
+            <div>
+              <h4 class='font-sans text-xs uppercase tracking-[0.2em] text-olive font-bold mb-1'>Email</h4>
+              <a href={`mailto:${siteConfig.email}`} class='text-charcoal-light text-base sm:text-lg font-medium hover:text-olive transition-colors font-sans block truncate'>
+                {siteConfig.email}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hours & Map Link -->
+        <div class='flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-border/70'>
+          <div class='space-y-1.5'>
+            <h4 class='font-sans text-xs uppercase tracking-[0.2em] text-olive font-bold mb-2'>Business Hours</h4>
+            {siteConfig.hours.map((h: any) => (
+              <div class='flex gap-4 text-xs sm:text-sm font-sans'>
+                <span class='text-charcoal-light font-medium min-w-[120px]'>{h.days}:</span>
+                <span class='text-warm-gray font-normal'>{h.time}</span>
+              </div>
+            ))}
+          </div>
+
+          <div>
+            <a 
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(siteConfig.address.street + ', ' + siteConfig.address.city + ', ' + siteConfig.address.stateAbbr + ' ' + siteConfig.address.zip)}`}
+              target='_blank'
+              rel='noopener noreferrer'
+              class='inline-flex items-center gap-2.5 bg-olive/10 border border-olive/20 text-olive px-6 py-3.5 rounded-full text-xs uppercase tracking-widest font-bold hover:bg-olive hover:text-ivory transition-all duration-300 shadow-sm'
+            >
+              <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                <path d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z'/>
+                <circle cx='12' cy='10' r='3'/>
+              </svg>
+              View Location Map
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Column: Floating Contact Form Card (6 cols) -->
+      <div class='lg:col-span-6 contact-form-wrapper bg-white/90 backdrop-blur-md p-8 sm:p-10 lg:p-12 rounded-3xl border border-border/80 shadow-2xl'>
+        <ContactForm />
+      </div>
+    </div>
+  </div>
+</section>

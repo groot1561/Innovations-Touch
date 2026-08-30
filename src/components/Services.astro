@@ -1,0 +1,26 @@
+---
+import { services } from '../data/services';
+import ServiceCard from './ServiceCard.astro';
+---
+
+<section id='services' class='services-section relative bg-cream py-24 lg:py-32 section-padding overflow-hidden'>
+  <div class='max-w-7xl mx-auto'>
+    <!-- Section Header -->
+    <div class='services-header mb-16 lg:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border/80 pb-12'>
+      <div>
+        <span class='label-text block mb-3 text-olive uppercase tracking-[0.2em] text-xs font-sans font-semibold'>What We Do</span>
+        <h2 class='font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-charcoal leading-[1.1] max-w-2xl'>
+          Design. Remodel. Transform.
+        </h2>
+      </div>
+      <p class='text-warm-gray text-base md:text-lg max-w-md leading-relaxed font-sans'>
+        From concept to completion, we bring thoughtful design and careful craftsmanship to every space.
+      </p>
+    </div>
+
+    <!-- 2x2 Architectural Grid -->
+    <div class='services-grid grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12'>
+      {services.map(s => <ServiceCard {...s} />)}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+---
+import { siteConfig } from '../data/siteConfig';
+import SocialIcons from './SocialIcons.astro';
+---
+
+<header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-cream/80 backdrop-blur-sm">
+  <div class="flex items-center justify-between h-[60px] lg:h-[80px] px-6 lg:px-12 xl:px-16 mx-auto">
+    <!-- Logo (Left) -->
+    <a href="#home" class="flex flex-col border-r-0 lg:border-r border-border pr-0 lg:pr-8 shrink-0">
+      <span class="font-serif text-xl text-charcoal tracking-wide">Innovations Touch</span>
+      <span class="label-text hidden lg:block text-[10px] uppercase tracking-[0.2em] text-warm-gray mt-0.5">Remodeling & Design</span>
+    </a>
+    
+    <!-- Desktop Nav (Centered in the middle) -->
+    <nav class="hidden lg:flex items-center justify-center gap-8 lg:gap-10 xl:gap-12 flex-1 mx-auto px-6" aria-label="Main navigation">
+      {siteConfig.nav.map((item) => (
+        <a 
+          href={item.href}
+          data-section={item.href}
+          class="font-sans text-sm uppercase tracking-wider font-medium text-charcoal-light hover:text-olive transition relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-olive after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    
+    <!-- Desktop Social (Far Right) -->
+    <div class="hidden lg:flex items-center pl-8 border-l border-border shrink-0">
+      <SocialIcons size="sm" />
+    </div>
+    
+    <!-- Mobile hamburger -->
+    <button id="menu-toggle" class="lg:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 z-[60]" aria-label="Open menu" aria-expanded="false">
+      <span class="hamburger-line block w-6 h-[2px] bg-charcoal transition-transform duration-300 origin-center"></span>
+      <span class="hamburger-line block w-6 h-[2px] bg-charcoal transition-opacity duration-300"></span>
+      <span class="hamburger-line block w-6 h-[2px] bg-charcoal transition-transform duration-300 origin-center"></span>
+    </button>
+  </div>
+</header>

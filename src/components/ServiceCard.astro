@@ -1,0 +1,58 @@
+---
+interface Props {
+  number: string;
+  name: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+}
+
+const { number, name, description, image, imageAlt } = Astro.props;
+---
+
+<article class='service-card group relative bg-ivory rounded-2xl border border-border/80 p-6 sm:p-8 transition-all duration-500 hover:border-olive/50 hover:shadow-2xl flex flex-col justify-between overflow-hidden'>
+  <div>
+    <!-- Top Header Bar: Number & Category -->
+    <div class='flex items-center justify-between pb-6 mb-6 border-b border-border/60'>
+      <span class='font-serif text-4xl lg:text-5xl text-olive font-light tracking-tight group-hover:text-olive-deep transition-colors duration-300'>
+        {number}
+      </span>
+      <span class='label-text text-[10px] text-warm-gray tracking-[0.2em] font-sans font-medium uppercase'>
+        Residential Remodel
+      </span>
+    </div>
+
+    <!-- Image Showcase with Aspect Ratio & Image Parallax wrapper -->
+    <div class='service-card-img-wrapper relative aspect-[16/10] overflow-hidden rounded-xl bg-charcoal/10 mb-6'>
+      <img 
+        src={image} 
+        alt={imageAlt} 
+        class='service-card-img w-full h-[115%] object-cover transition-transform duration-700 ease-out group-hover:scale-105' 
+        loading='lazy' 
+      />
+      <div class='absolute inset-0 bg-charcoal/10 transition-opacity duration-500 group-hover:opacity-0'></div>
+    </div>
+
+    <!-- Title & Description -->
+    <div class='space-y-3'>
+      <h3 class='service-name font-serif text-2xl lg:text-3xl text-charcoal tracking-wide group-hover:text-olive transition-colors duration-300'>
+        {name}
+      </h3>
+      <p class='service-desc text-warm-gray text-sm lg:text-base leading-relaxed font-sans font-normal'>
+        {description}
+      </p>
+    </div>
+  </div>
+
+  <!-- Bottom Action Line -->
+  <div class='pt-8 mt-6 flex items-center justify-between border-t border-border/40'>
+    <span class='text-xs uppercase tracking-[0.15em] font-sans font-medium text-charcoal-light group-hover:text-olive transition-colors'>
+      Explore Service
+    </span>
+    <div class='w-10 h-10 rounded-full border border-border flex items-center justify-center text-charcoal transition-all duration-300 group-hover:border-olive group-hover:bg-olive group-hover:text-ivory group-hover:translate-x-1'>
+      <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'>
+        <path d='M5 12h14M12 5l7 7-7 7'/>
+      </svg>
+    </div>
+  </div>
+</article>
